@@ -26,22 +26,31 @@ public class Cache {
 
     public void addData(int data, FileWriter writer) {
         try {
-            // Process the passed data
             if (findData(data) != -999) {
-                int dataIndex = findData(data);
-                ageUp(dataIndex);
-                blocks.get(dataIndex).resetAge();
                 cache_hit++;
-            } else if (cache_blocks != blocks.size()) {
-                ageUp(-999);
+            } else if (blocks.size() < cache_blocks) {
                 blocks.add(new Block(data));
                 cache_miss++;
-            } else if (cache_blocks == blocks.size()) {
+            } else {
                 int oldestIndex = findOldest();
-                ageUp(oldestIndex);
                 blocks.get(oldestIndex).replaceData(data);
                 cache_miss++;
             }
+            memory_access_count++;
+            updateRates();
+
+            // Calculate access times
+            getAveMemAccessTime();
+            totalMemoryAccessTime = getTotalMemAccessTime();
+
+            writeTextLog(data, writer, memory_access_count == memory_blocks);
+
+            printCacheStatus();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
             memory_access_count++;
 
             updateRates();
