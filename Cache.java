@@ -151,6 +151,7 @@ public class Cache{
         float ave_access_time =hit_rate + miss_rate*miss_penalty;
         return ave_access_time;
     } 
+    
    // public float getTotalAccessTime(){
     //    return cache_hit*cache_line *1+ cache_miss*cache_line*
     //}
@@ -183,6 +184,7 @@ public class Cache{
         System.out.println(e);
     }            
 }      
+
 public void incrementCacheHit() {
     cache_hit++;
 }
